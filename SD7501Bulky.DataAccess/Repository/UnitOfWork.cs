@@ -17,6 +17,7 @@ namespace SD7501Bulky.DataAccess.Repository
     public UnitOfWork(ApplicationDbContext db)
     {
         _db = db;
+        Category= new CategoryRepository(_db);
     }
 
     public void Save()
