@@ -3,8 +3,9 @@ using BulkyWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using SD7501Bulky.DataAccess.Repository.IRepository;
 
-namespace BulkyWeb.Controllers
+namespace BulkyWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _categoryRepo;
