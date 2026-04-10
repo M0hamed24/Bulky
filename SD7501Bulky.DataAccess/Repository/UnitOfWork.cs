@@ -1,5 +1,6 @@
 ﻿using BulkyWeb.Data;
 using SD7501Bulky.DataAccess.Repository.IRepository;
+using SD7501Bulky.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,13 @@ namespace SD7501Bulky.DataAccess.Repository
     private readonly ApplicationDbContext _db;
 
     public ICategoryRepository Category { get; private set; }
+    public IProductRepository product { get; private set; }
 
     public UnitOfWork(ApplicationDbContext db)
     {
         _db = db;
         Category= new CategoryRepository(_db);
+        product = new ProductRepository(_db);
     }
 
     public void Save()
