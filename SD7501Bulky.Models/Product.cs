@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using BulkyWeb.Models;
 
 namespace SD7501Bulky.Models
 {
@@ -42,5 +44,12 @@ namespace SD7501Bulky.Models
         [Display(Name = "Price 100+")]
         [Range(1, 1000)]
         public double Price100 { get; set; }
+
+        public int CategoryId { get; set; }
+
+        [ForeignKey("CategoryId")]
+        public Category category { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }
