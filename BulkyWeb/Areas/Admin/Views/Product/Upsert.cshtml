@@ -1,16 +1,16 @@
-﻿@using SD7501Bulky.Models
-@model SD7501Bulky.Models.ViewModles.ProductVM
+﻿@model SD7501Bulky.Models.ViewModles.ProductVM
 <div class="card shadow border-0 mt-4">
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class=" col text-center">
-                <h2 class="text-white py-2">Create Product</h2>
+                <h2 class="text-white py-2">@(Model.Product.Id != 0 ? "Update" : "Create")</h2>
             </div>
         </div>
     </div>
     <div class="card-body p-4">
 
-        <form method="post" class="row">
+        <form method="post" class="row" enctype="multipart/form-data">
+            <input asp-for= "Product.Id" hidden/>
             <div class="border p-3">
                 @*<div asp-validation-summary="All"></div>*@
                 <div class="mb-3 row p-1">
@@ -75,6 +75,13 @@
                         <option disabled selected> Select Category</option>
                     <</select>
                     <span asp-validation-for="Product.CategoryId" class=" text-danger"></span>
+
+                </div>
+
+                <div class="mb-3 row p-1">
+                    <label asp-for="Product.ImageUrl" class="ms-2"> </label>
+                    <input type="file" class="form-control border-0 shadow"/>
+                    <span asp-validation-for="Product.ImageUrl" class=" text-danger"></span>
 
                 </div>
 
