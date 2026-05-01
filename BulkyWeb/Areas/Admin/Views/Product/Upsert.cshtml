@@ -11,7 +11,9 @@
 
         <form method="post" class="row" enctype="multipart/form-data">
             <input asp-for= "Product.Id" hidden/>
-            <div class="border p-3">
+            <div class="row">
+                <div class="col-10">
+                    <div class="border p-3">
                 @*<div asp-validation-summary="All"></div>*@
                 <div class="mb-3 row p-1">
                     <label asp-for="Product.Title" class="ms-2"> </label>
@@ -23,8 +25,6 @@
                 <div class="mb-3 row p-1">
                     <label asp-for="Product.Description" class="ms-2"> </label>
                     <textarea asp-for="Product.Description" class="form-control border-0 shadow"> </textarea>
-                    <span asp-validation-for="Product.Description" class="text-danger"></span>
-
                 </div>
 
                 <div class="mb-3 row p-1">
@@ -80,7 +80,7 @@
 
                 <div class="mb-3 row p-1">
                     <label asp-for="Product.ImageUrl" class="ms-2"> </label>
-                    <input type="file" class="form-control border-0 shadow"/>
+                    <input type="file" name="file"class="form-control border-0 shadow"/>
                     <span asp-validation-for="Product.ImageUrl" class=" text-danger"></span>
 
                 </div>
@@ -88,7 +88,14 @@
 
                 <div class="row pt-2">
                     <div class="col-6 col-md-3">
-                        <button type="submit" class="btn btn-primary form-control">Create</button>
+                        @if (Model.Product.Id != 0)
+                        {
+                            <button type="submit" class="btn btn-primary form-control">Update</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary form-control">Create</button>
+                        }
                     </div>
 
                     <div class="col-6 col-md-3">
@@ -98,6 +105,13 @@
                     </div>
                 </div>
             </div>
+
+                </div>
+                <div class="col-2">
+                    <img src="@Model.Product.ImageUrl" width="100%"
+                    style="border-radius:5px;border:1px solid #bbb9b9"/>
+                </div>
+            </div>
         </form>
 
 
@@ -105,6 +119,30 @@
 </div>
 
 @section Scripts {
+    <script>
+        tinymce.init({
+          selector: 'textarea',
+          plugins: [
+            // Core editing features
+            'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+            // Your account includes a free trial of TinyMCE premium features
+            // Try the most popular premium features until May 15, 2026:
+            'checklist', 'mediaembed', 'casechange', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'advtemplate', 'tinymceai', 'uploadcare', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown','importword', 'exportword', 'exportpdf'
+          ],
+          toolbar: 'undo redo | tinymceai-chat tinymceai-quickactions tinymceai-review | blocks fontfamily fontsize | bold italic underline strikethrough | link media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography uploadcare | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+          tinycomments_mode: 'embedded',
+          tinycomments_author: 'Author name',
+          mergetags_list: [
+            { value: 'First.Name', title: 'First Name' },
+            { value: 'Email', title: 'Email' },
+          ],
+          tinymceai_token_provider: async () => {
+            await fetch(`https://demo.api.tiny.cloud/1/n8pxuge440tg617ipawf1kbvhvz316d2qwlx4jhelzwm5l01/auth/random`, { method: "POST", credentials: "include" });
+            return { token: await fetch(`https://demo.api.tiny.cloud/1/n8pxuge440tg617ipawf1kbvhvz316d2qwlx4jhelzwm5l01/jwt/tinymceai`, { credentials: "include" }).then(r => r.text()) };
+          },
+          uploadcare_public_key: '6b81836ddcdb038eaf11',
+        });
+    </script>
     @{
         <partial name="_ValidationScriptsPartial" />
     }

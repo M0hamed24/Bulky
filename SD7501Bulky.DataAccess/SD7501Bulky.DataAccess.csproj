@@ -19,4 +19,8 @@
     <ProjectReference Include="..\SD7501Bulky.Models\SD7501Bulky.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

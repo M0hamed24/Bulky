@@ -13,9 +13,11 @@ namespace BulkyWeb.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ProductController(IUnitOfWork unitOfWork )
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -61,10 +63,39 @@ namespace BulkyWeb.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-            _unitOfWork.Product.Add(productVM.Product);
-            _unitOfWork.Product.Save();
-            TempData["success"] = "Product created successfully";
-            return RedirectToAction("Index");
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+                if (wwwRootPath != null && file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productFolder = Path.Combine(wwwRootPath, @"images\products");
+
+                    if (!Directory.Exists(productFolder))
+                    {
+                        Directory.CreateDirectory(productFolder);
+                    }
+
+                    string fullPath = Path.Combine(productFolder, fileName);
+
+                    using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    productVM.Product.ImageUrl = @"\images\products\" + fileName;
+                }
+                if (productVM.Product.Id == 0)
+                {
+                    _unitOfWork.Product.Add(productVM.Product);
+                    TempData["success"] = "Product created successfully";
+                }
+                else
+                {
+                    _unitOfWork.Product.Update(productVM.Product);
+                    TempData["success"] = "Product updated successfully";
+                }
+                _unitOfWork.Save();
+                return RedirectToAction("Index");
             }
 
             else
