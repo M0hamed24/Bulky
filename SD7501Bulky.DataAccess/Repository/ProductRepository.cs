@@ -27,7 +27,23 @@ namespace SD7501Bulky.DataAccess.Repository
 
         public void Update(Product obj)
         {
-            _db.Product.Update(obj);
+            var objFromDb = _db.Product.FirstOrDefault(u  => u.Id == obj.Id);
+            if (objFromDb != null)
+            {
+                objFromDb.Title = obj.Title;
+                objFromDb.ISBN = obj.ISBN;
+                objFromDb.Price = obj.Price;
+                objFromDb.ListPrice = obj.ListPrice;
+                objFromDb.Price50 = obj.Price50;
+                objFromDb.Price100 = obj.Price100;
+                objFromDb.Description = obj.Description;
+                objFromDb.Category = obj.Category;
+                objFromDb.Author = obj.Author;
+                if (objFromDb.ImageUrl != null)
+                {
+                    obj.ImageUrl = objFromDb.ImageUrl;
+                }
+            }
         }
     }
 }
