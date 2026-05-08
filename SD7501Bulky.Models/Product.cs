@@ -50,7 +50,7 @@ namespace SD7501Bulky.Models
 
         [ForeignKey("CategoryId")]
         [ValidateNever]
-        public Category Category { get; set; }
+        public Category category { get; set; }
 
         [ValidateNever]
         public string ImageUrl { get; set; }

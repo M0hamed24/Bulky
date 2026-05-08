@@ -18,39 +18,22 @@ namespace SD7501Bulky.DataAccess.Repository
         {
             _db = db;
             this.dbset=_db.Set<T>();
-            _db.Product.Include(u => u.Category).Include(u => u.CategoryId);
         }
         void IRepository<T>.Add(T entity)
         {
             dbset.Add(entity);
         }
 
-        T IRepository<T>.Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        T IRepository<T>.Get(Expression<Func<T, bool>> filter)
         {
             IQueryable<T> query = dbset;
             query=query.Where(filter);
-
-            if(!string.IsNullOrEmpty(includeProperties))
-            {
-                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    query = query.Include(includeProp);
-                }
-            }
             return query.FirstOrDefault();
         }
 
-        IEnumerable<T> IRepository<T>.GetAll(string? includeProperties = null)
+        IEnumerable<T> IRepository<T>.GetAll()
         {
             IQueryable<T> query = dbset;
-
-            if (!string.IsNullOrEmpty(includeProperties))
-            {
-                foreach (var includeProp in includeProperties.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    query = query.Include(includeProp);
-                }
-            }
             return query.ToList();
         }
 
