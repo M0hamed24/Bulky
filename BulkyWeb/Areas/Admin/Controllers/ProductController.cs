@@ -165,5 +165,15 @@ namespace BulkyWeb.Areas.Admin.Controllers
             return $"Return All Categories wit Name : {name}";
         }
 
+        #region API calls
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+            return Json(new { data = objProductList });
+
+        }
+        #endregion
+
     }
 }
